@@ -37,12 +37,11 @@
                 <td>{{ $row->gst_number }}</td>
                 <td>
                   <form action="{{ route('vendor.destroy',$row->id) }}" method="POST">
-                    <a class="btn btn-success" href="{{ route('vendor.show',$row->id) }}">Show</a>
-                    <a class="btn btn-primary" href="{{ route('vendor.edit',$row->id) }}">Edit</a>
+                    <a class="btn btn-success" href="{{ route('vendor.show',$row->id) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a class="btn btn-primary" href="{{ route('vendor.edit',$row->id) }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                     @csrf
                     @method('DELETE')
-      
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                   </form>
                 </td>
               </tr>

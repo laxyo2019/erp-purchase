@@ -203,7 +203,9 @@ class PurchaseController extends Controller
     	$id = $temp['id'];
     	$temps = json_decode($temp['temp_data'], true);
     	$cart = $temps;
-    	session()->put('cart', $cart);
+    	$new_session = session()->get('cart');
+    	$data = array_merge($cart, $new_session);
+    	session()->put('cart', $data);
     	Purchase_temperory::find($id)->delete();
     	return redirect()->route('purchase.index');
     }

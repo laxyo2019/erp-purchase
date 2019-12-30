@@ -1,4 +1,4 @@
-<?php ///print_r(session('cart')); die; ?>
+<?php //print_r(session('cart')); die; ?>
 @if(session('cart'))
 @foreach(session('cart') as $id => $purchase)
 	<tr>
