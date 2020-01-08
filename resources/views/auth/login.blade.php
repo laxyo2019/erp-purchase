@@ -6,6 +6,12 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
+								
+								@if ($message = Session::get('active'))
+				            <div class="alert alert-danger">
+				                <p>{{ $message }}</p>
+				            </div>
+				        @endif
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

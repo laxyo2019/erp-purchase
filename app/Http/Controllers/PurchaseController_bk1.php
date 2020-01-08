@@ -205,15 +205,19 @@ class PurchaseController extends Controller
     	$cart = $temps;
     	$new_session = session()->get('cart');
     	if(!empty($new_session)){
-	    	foreach ($new_session as $key => $val) {
-			  	$latest_id = $key;
-    			if(isset($cart[$latest_id])) {
-		        $cart[$latest_id]['quantity']++;
-		        $data = $cart;
-			    }
-		   	}
+		    	foreach ($new_session as $key => $val) {
+				  	$latest_id = $key;
+	    			if(isset($cart[$latest_id])) {
+				        $cart[$latest_id]['quantity']++;
+				        $data = $cart;
+				        //print_r($latest_id); die;
+			      }
+			   	}
+		     //  else{
+    			// 		$data = array_merge($cart, $new_session);
+    			// }
     	}else{
-    		$data = $cart;
+    			$data = $cart;
     	}
     	session()->put('cart', $data);
     	Purchase_temperory::find($id)->delete();

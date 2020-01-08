@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\item_purchase_history;
 use App\purchase_invoice;
 use App\Purchase;
+use Helper;
+use PDF;
 use Illuminate\Http\Request;
 
 class ItemPurchaseHistoryController extends Controller
@@ -91,4 +93,21 @@ class ItemPurchaseHistoryController extends Controller
     {
         //
     }
+
+    public function date_filter(Request $request)
+    {
+      $start = $request->start;
+      $end = $request->end;
+      $purchase = purchase_invoice::whereBetween('created_at', [$start, $end])->get();
+      $data = json_encode($purchase);
+      return $data;
+    }
+
+    public function purchase_history_pdf()
+	  {
+	    $purchase = purchase_invoice::all();
+	    $pdf = PDF::loadView('item_purchase_history', compact('purchase'));
+	    //$pdf->save(storage_path().'_filename.pdf');
+	    return $pdf->download('Purchase_Records_'.date("d-M-Y").'.pdf');
+	  }
 }

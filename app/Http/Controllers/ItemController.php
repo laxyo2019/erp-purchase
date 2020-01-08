@@ -8,6 +8,9 @@ use App\item;
 use App\unitofmeasurement;
 use App\item_category;
 use App\location;
+use Helper;
+use PDF;
+use DB;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -55,13 +58,25 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'item_number' => 'required',
+            'title' => 'required|unique:items',
+            'brand' => 'required',
+            'department' => 'required',
             'unit_id' => 'required',
             'category_id' => 'required',
-            'title' => 'required|unique:items',
-            'description' => 'required'
         ]);
-  
+
+  			$ids = DB::select(DB::raw("SELECT nextval('items_id_seq')"));
+  			$id = $ids[0]->nextval+1;
+        $cat = str_pad($request->category_id, 2, '0', STR_PAD_LEFT);
+        $unit = str_pad($request->unit_id, 2, '0', STR_PAD_LEFT);
+        $item = str_pad($id, 4, '0', STR_PAD_LEFT);
+        $barcode = $cat.$unit.$item;
+        $request['item_number'] = $barcode;
+
+        // $data = array(
+        // 		'item_number' => $request->
+        // );
+
         item::create($request->all());
    
         return redirect()->route('item.index')->with('success','Item Added successfully.');
@@ -108,11 +123,13 @@ class ItemController extends Controller
      */
     public function update(Request $request, item $item)
     {
+    		$id = $item['id'];
         $request->validate([
+            'title' => 'required|unique:items,title,'.$id,
+            'brand' => 'required',
+            'department' => 'required',
             'unit_id' => 'required',
             'category_id' => 'required',
-            'title' => 'required',
-            'description' => 'required'
         ]);
   
         $item->update($request->all());
@@ -147,4 +164,12 @@ class ItemController extends Controller
       }
 			return view('item.table',compact('items'));
     }
+
+    public function export_pdf()
+	  {
+	    $items = item::with(['brand_name','department_name','category','unit'])->get();
+	    $pdf = PDF::loadView('item.table', compact('items'));
+	    return $pdf->download('Items_'.date("d-M-Y").'.pdf');
+	  }
+
 }

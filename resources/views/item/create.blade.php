@@ -23,11 +23,11 @@
             <form action="{{ route('item.store') }}" method="post">
                 @csrf
                 <div class="row">
-                    <div class="form-group col-md-6">
+                    {{-- <div class="form-group col-md-6">
                         <label>Item Number</label>
                         <input type="text" class="form-control" value="{{ $s }}" name="item_number" readonly="">
-                    </div>
-                    <div class="form-group col-md-6">
+                    </div> --}}
+                    <div class="form-group col-md-12">
                         <label>Add Title</label>
                         <input type="text" class="form-control" placeholder="Add Title" name="title">
                     </div>
