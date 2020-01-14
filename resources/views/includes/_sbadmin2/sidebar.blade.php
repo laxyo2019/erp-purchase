@@ -67,7 +67,7 @@
     </div>
   </li>
   
-  {{-- <li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <i class="fas fa-fw fa-cog"></i>
       <span>Vendors</span>
@@ -78,7 +78,13 @@
         <a class="collapse-item" href="{{ route('vendor.index') }}">Vendor Listing</a>
       </div>
     </div>
-  </li> --}}
+  </li>
+
+	<li class="nav-item">
+    <a class="nav-link" href="{{ route('items_approval') }}">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Request for Items</span></a>
+  </li>
 
 	{{-- <li class="nav-item">
     <a class="nav-link" href="{{ route('purchase.index') }}">
@@ -115,21 +121,78 @@
 
   <!-- Divider -->
 	@endrole
+	
+	@hasrole(1)
+	<li class="nav-item">
+    <a class="nav-link" href="{{ route('manager_approval') }}">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>RFI by Users</span></a>
+  </li>
+	@endrole
 
-  @hasrole(4)
+	@hasrole(3)
+	<li class="nav-item">
+    <a class="nav-link" href="{{ route('user_request') }}">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>RFI by Users</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Request For Item</span>
+    </a>
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{{ route('request_for_item.create') }}">Create RFI</a>
+        <a class="collapse-item" href="{{ route('request_for_item.index') }}">RFI Listing</a>
+      </div>
+    </div>
+  </li>
+
 	<li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <i class="fas fa-fw fa-cog"></i>
-      <span>Quotations</span>
+      <span>Request For Quotation</span>
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="{{ route('quotation.create') }}">Create Quotation</a>
-        <a class="collapse-item" href="{{ route('quotation.index') }}">Quotation Listing</a>
+        <a class="collapse-item" href="{{ route('rfq.create') }}">Create RFQ</a>
+        <a class="collapse-item" href="{{ route('rfq.index') }}">RFQ Listing</a>
       </div>
     </div>
   </li>
   @endrole
+
+  @hasrole(4)
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Request For Items (RFI)</span>
+    </a>
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{{ route('request_for_item.create') }}">Create RFI</a>
+        <a class="collapse-item" href="{{ route('request_for_item.index') }}">RFI Listing</a>
+      </div>
+    </div>
+  </li>
+  @endrole
+
+	@hasrole(5)
+	<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Request For Items (RFI)</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{{ route('request_for_item.create') }}">Create RFI</a>
+        <a class="collapse-item" href="{{ route('request_for_item.index') }}">RFI Listing</a>
+      </div>
+    </div>
+  </li>
+	@endrole
 
   <hr class="sidebar-divider d-none d-md-block">
 

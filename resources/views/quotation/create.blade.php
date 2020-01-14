@@ -12,7 +12,7 @@
             </ul>
         </div>
     @endif
-		<form action="{{ route('quotation.store') }}" method="post">
+		<form action="{{ route('quotation.store') }}" method="post" enctype="multipart/form-data">
     @csrf
 	  <table class="table table-bordered">
 	    <tr>
@@ -81,6 +81,7 @@
 	          <div align="right">
 	            <button type="button" name="add_row" id="add_row" class="btn btn-success btn-xs">+</button>
 	          </div>
+	          <input type="file" name="file">
 	        </td>
 	      </tr>
 	      <tr>
@@ -207,54 +208,6 @@ $(document).ready(function(){
   $(document).on('blur', '.order_item_tax3_rate', function(){
     cal_final_total(count);
   });
-
-  // $('#create_invoice').click(function(){
-  //   if($.trim($('#order_receiver_name').val()).length == 0)
-  //   {
-  //     alert("Please Enter Reciever Name");
-  //     return false;
-  //   }
-
-  //   if($.trim($('#order_no').val()).length == 0)
-  //   {
-  //     alert("Please Enter Invoice Number");
-  //     return false;
-  //   }
-
-  //   if($.trim($('#order_date').val()).length == 0)
-  //   {
-  //     alert("Please Select Invoice Date");
-  //     return false;
-  //   }
-
-  //   for(var no=1; no<=count; no++)
-  //   {
-  //     if($.trim($('#item_name'+no).val()).length == 0)
-  //     {
-  //       alert("Please Enter Item Name");
-  //       $('#item_name'+no).focus();
-  //       return false;
-  //     }
-
-  //     if($.trim($('#order_item_quantity'+no).val()).length == 0)
-  //     {
-  //       alert("Please Enter Quantity");
-  //       $('#order_item_quantity'+no).focus();
-  //       return false;
-  //     }
-
-  //     if($.trim($('#order_item_price'+no).val()).length == 0)
-  //     {
-  //       alert("Please Enter Price");
-  //       $('#order_item_price'+no).focus();
-  //       return false;
-  //     }
-
-  //   }
-
-  //   $('#invoice_form').submit();
-
-  // });
-
+  
 });
 </script>

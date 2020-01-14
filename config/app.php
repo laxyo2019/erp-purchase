@@ -178,6 +178,9 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 				Collective\Html\HtmlServiceProvider::class,
+				Maatwebsite\Excel\ExcelServiceProvider::class,
+				Nitmedia\Wkhtml2pdf\L5Wkhtml2pdfServiceProvider::class,
+				Illuminate\Notifications\NotificationServiceProvider::class,
 
     ],
 
@@ -233,6 +236,10 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Form' => Collective\Html\FormFacade::class,
 				'Html' => Collective\Html\HtmlFacade::class,
+				'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+				'PDFs'  => Nitmedia\Wkhtml2pdf\Facades\Wkhtml2pdf::class,
+				'Notification' => Illuminate\Support\Facades\Notification::class,
+
     ],
 
 ];

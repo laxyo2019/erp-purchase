@@ -4,7 +4,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
   <a href="{{ '/home' }}" class="main-title-w3layouts mb-2 float-right"><i class="fa fa-arrow-left"></i>  Back</a>
-  <h5 class="main-title-w3layouts mb-2">Vendors Listing</h5>
+  <h5 class="main-title-w3layouts mb-2">RFI's Listing</h5>
   <div class="card shadow mb-4">
     <div class="card-body">
       <div class="table-responsive">
@@ -17,28 +17,21 @@
           <thead>
             <tr>
               <th>S.No</th>
-              <th>Firm Name</th>
-              <th>Email</th>
-              <th>Mobile No.</th>
-              <th>Vendor RegNo.</th>
-              <th>GST No.</th>
+              <th>Item Requirement</th>
+              <th>Items</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            @if (!empty($quotations))
-              @foreach ($quotations as $row)
+            @if (!empty($request_for_items))
+            	@foreach($request_for_items as $row)
               <tr>
                 <td>{{ ++$i }}</td>
-                <td>{{ $row->firm_name }}</td>
-                <td>{{ $row->email }}</td>
-                <td>{{ $row->mobile }}</td>
-                <td>{{ $row->register_number }}</td>
-                <td>{{ $row->gst_number }}</td>
+                <td>You are generated new items request</td>
+                <td>{{ count(json_decode($row->requested_data)) }}</td>
                 <td>
-                  <form action="{{ route('quotation.destroy',$row->id) }}" method="POST">
-                    <a class="btn btn-success" href="{{ route('quotation.show',$row->id) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                    <a class="btn btn-primary" href="{{ route('quotation.edit',$row->id) }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                  <form action="{{ route('request_for_item.destroy',$row->id) }}" method="POST">
+                    <a class="btn btn-primary" href="{{ route('request_for_item.edit',$row->id) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
@@ -49,7 +42,7 @@
             @endif
           </tbody>
         </table>
-        {!! $quotations->links() !!}
+        {!! $request_for_items->links() !!}
       </div>
     </div>
   </div>

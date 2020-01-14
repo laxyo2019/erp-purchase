@@ -10,6 +10,7 @@ use App\item_category;
 use App\location;
 use Helper;
 use PDF;
+use PDFs;
 use DB;
 use Illuminate\Http\Request;
 
@@ -67,6 +68,7 @@ class ItemController extends Controller
 
   			$ids = DB::select(DB::raw("SELECT nextval('items_id_seq')"));
   			$id = $ids[0]->nextval+1;
+  			//$id = Helper::getAutoIncrementId();
         $cat = str_pad($request->category_id, 2, '0', STR_PAD_LEFT);
         $unit = str_pad($request->unit_id, 2, '0', STR_PAD_LEFT);
         $item = str_pad($id, 4, '0', STR_PAD_LEFT);

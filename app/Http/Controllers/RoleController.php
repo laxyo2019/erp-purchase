@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class RoleController extends Controller
 {
@@ -23,7 +24,6 @@ class RoleController extends Controller
     public function index()
     {
         $role = Role::orderBy('id','DESC')->paginate(10);
-        //print_r($permission); die;
         return view('role',compact('role'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 

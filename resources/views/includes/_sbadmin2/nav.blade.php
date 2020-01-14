@@ -8,6 +8,33 @@
 
   <!-- Topbar Navbar -->
   <ul class="navbar-nav ml-auto">
+		@hasrole(3)
+
+		<!-- Notifications -->
+    <li class="nav-item dropdown no-arrow mx-1">
+      <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-bell fa-fw"></i>
+        <span class="badge badge-danger badge-counter">{{ count(Auth::user()->unreadNotifications) }}</span>
+      </a>
+      <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+      	@foreach(Auth::user()->unreadNotifications as $notification)
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <div class="mr-3">
+            <div class="icon-circle bg-primary">
+              <i class="fas fa-file-alt text-white"></i>
+            </div>
+          </div>
+          <div>
+            <div class="small text-gray-500">{{ $notification['data']['date'] }}</div>
+            <span class="font-weight-bold">{{$notification['data']['name']}}</span>
+          </div>
+        </a>
+        @endforeach
+        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Notifications</a>
+      </div>
+    </li>
+		<!-- Notifications -->
+		@endrole
 
     <div class="topbar-divider d-none d-sm-block"></div>
 
