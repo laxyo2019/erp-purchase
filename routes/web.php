@@ -20,6 +20,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // for Quotation
+
+Route::get('vendor_form/{id}/{vid}', 'RequestForQuotationController@VendorRFQFormData')->name('vendor_form');
+
+
 /*Route::resource('quotation', 'QuotationController');
 Route::get('export_quotation/{id}', 'QuotationController@export_quotation')->name('export_quotation');
 Route::get('importExportView', 'QuotationController@importExportView');
@@ -76,6 +80,7 @@ Route::group(['middleware' => ['role:assistant_manager|purchase_manager']], func
     Route::get('user_req_status/{id}', 'RequestForItemController@UsersRequestStatus')->name('user_req_status');
     Route::put('user_req_update/{id}', 'RequestForItemController@UsersRequestUpdate')->name('user_req_update');
     Route::get('applyforquotation/{id}', 'RequestForItemController@ApplyForQuotation')->name('applyforquotation');
+    Route::post('rfiquotationtomail/{id}', 'RequestForItemController@RfiQuotationToMail')->name('rfiquotationtomail');
 });
 
 Route::group(['middleware' => ['role:users']], function () {

@@ -23,6 +23,7 @@ class CreateVendorsTable extends Migration
             $table->string('gst_number');
             $table->string('alt_number');
             $table->string('address');
+            $table->string('item_id');
             $table->timestamps();
         });
     }

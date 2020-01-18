@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\vendor;
+use App\item;
 use Illuminate\Http\Request;
 
 class VendorController extends Controller
@@ -30,7 +31,8 @@ class VendorController extends Controller
      */
     public function create()
     {
-        return view('vendor.create');
+    		$items = item::all();
+        return view('vendor.create', compact('items'));
     }
 
     /**
@@ -48,10 +50,22 @@ class VendorController extends Controller
             'address' => 'required',
             'register_number' => 'required|unique:vendors',
             'firm_name' => 'required',
+            'item_id' => 'required',
             'gst_number' => 'required|unique:vendors'
         ]);
-  
-        Vendor::create($request->all());
+  			
+  			$data = array(
+  					'name' => $request->name,
+  					'email' => $request->email,
+  					'mobile' => $request->mobile,
+  					'register_number' => $request->register_number,
+  					'firm_name' => $request->firm_name,
+  					'gst_number' => $request->gst_number,
+  					'alt_number' => $request->alt_number,
+  					'address' => $request->address,
+  					'item_id' => json_encode($request->item_id),
+  			);
+  			Vendor::create($data);
    
         return redirect()->route('vendor.index')->with('success','Vendor Added successfully.');
     }
@@ -64,7 +78,13 @@ class VendorController extends Controller
      */
     public function show(vendor $vendor)
     {
-        return view('vendor.show',compact('vendor'));
+    		$item_id = json_decode($vendor->item_id);
+    		if(!empty($item_id)) {
+    			$items = item::whereIn('id',$item_id)->get();
+    		}else{
+    			$items = array();
+    		}
+    		return view('vendor.show',compact('vendor','items'));
     }
 
     /**
@@ -75,7 +95,8 @@ class VendorController extends Controller
      */
     public function edit(vendor $vendor)
     {
-        return view('vendor.edit',compact('vendor'));
+        $items = item::all();
+        return view('vendor.edit',compact('vendor','items'));
     }
 
     /**
@@ -96,8 +117,18 @@ class VendorController extends Controller
             'firm_name' => 'required',
             'gst_number' => 'required'
         ]);
-  
-        $vendor->update($request->all());
+  				
+  			$data = array(
+  					'name' => $request->name,
+  					'email' => $request->email,
+  					'mobile' => $request->mobile,
+  					'firm_name' => $request->firm_name,
+  					'gst_number' => $request->gst_number,
+  					'alt_number' => $request->alt_number,
+  					'address' => $request->address,
+  					'item_id' => json_encode($request->item_id),
+  			);
+        $vendor->update($data);
   
         return redirect()->route('vendor.index')->with('success','Vendors details updated successfully');
     }

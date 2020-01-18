@@ -52,15 +52,15 @@ class MemberController extends Controller
         $validation = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:users|unique:members',
+            'email' => 'required|email|unique:users|unique:members|regex:/(.*)@laxyo\.in/i',
             'phone' => 'required',
             'password' => 'required',
             'role_id' => 'required'
         ]);
-  			//print_r($validation->request['email']); die;
   			if ($validation->fails())
         {
-            return 'input fields must be required or email must me unique';
+            return json_encode($validation->errors()); 
+            //'input fields must be required or email must me unique';
         }
         else
         {
@@ -83,9 +83,7 @@ class MemberController extends Controller
 			        ];
 			        Member::create($MemberTable);
 			    }
-
-			    return 'Member Added successfully.';
-	        //return redirect()->route('employee.index')->with('success','Member Added successfully.');
+			    return 'success';
 	      }
     }
 
@@ -123,7 +121,7 @@ class MemberController extends Controller
         $validation = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required',
+            'email' => 'required|email|regex:/(.*)@laxyo\.in/i',
             'phone' => 'required',
             'role_id' => 'required',
             'status' => 'required'
@@ -131,7 +129,7 @@ class MemberController extends Controller
 
         if ($validation->fails())
         {
-            return 'input fields must be required or email must me unique';
+            return json_encode($validation->errors());
         }
         else
         {
@@ -157,9 +155,8 @@ class MemberController extends Controller
 	  			DB::table('model_has_roles')->where('model_id',$request->user_id)->delete();
 	  			$user->assignRole($request->input('role_id'));
 	        $member->update($request->all());
-
-	  
-	        return 'Employee details updated successfully';
+	        
+	        return 'success';
 	      }
     }
 

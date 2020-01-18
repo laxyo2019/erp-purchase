@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use App\item_category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,8 +21,9 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brand = brand::latest()->paginate(10);
-        return view('brand',compact('brand'))->with('i', (request()->input('page', 1) - 1) * 10);
+        $brand = brand::with(['category'])->latest()->paginate(10);
+        $item_category = item_category::all();
+        return view('brand',compact('brand','item_category'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -43,20 +45,22 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
+        		'category_id' => 'required',
             'name' => 'unique:brands',
             'description' => ''
         ]);
         if ($validation->fails())
         {
-            return "The Brand Name has already been taken";
+            return "The Subcategory Name has already been taken";
         }
         else
         {
             $data = new brand;
+            $data->category_id = $request->input('category_id');
             $data->name = $request->input('name');
             $data->description = $request->input('description');
             $data->save ();
-            return 'Brand added';
+            return 'Subcategory added';
         }
     }
 
@@ -91,7 +95,7 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
-        brand::where('id', $request->input('id'))->update(['name'=> $request->input('name'), 'description' => $request->input('description')]);
+        brand::where('id', $request->input('id'))->update(['category_id'=> $request->input('category_id'), 'name'=> $request->input('name'), 'description' => $request->input('description')]);
     }
 
     /**
@@ -103,6 +107,6 @@ class BrandController extends Controller
     public function destroy($id)
     {
         brand::find($id)->delete();
-        return redirect()->route('brand.index')->with('success','Brand deleted successfully');
+        return redirect()->route('brand.index')->with('success','Subcategory deleted successfully');
     }
 }

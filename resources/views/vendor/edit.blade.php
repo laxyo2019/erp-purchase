@@ -16,14 +16,24 @@
                     </ul>
                 </div>
             @endif
-
+						                        		
             <form action="{{ route('vendor.update',$vendor->id) }}" method="post">
                 @csrf
                 @method('PUT')
+								<div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Registered Vendor Number</label>
+                        <input type="text" class="form-control" value="{{ $vendor->register_number }}" name="register_number" readonly="">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Firm Name</label>
+                        <input type="text" class="form-control" value="{{ $vendor->firm_name }}" name="firm_name">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Vendor Name</label>
-                        <input type="name" class="form-control" value="{{ $vendor->name }}" name="name">
+                        <input type="text" class="form-control" value="{{ $vendor->name }}" name="name">
                     </div>
                     <div class="form-group col-md-6">
                         <label>Email</label>
@@ -33,34 +43,40 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Mobile No.</label>
-                        <input type="mobile" class="form-control" value="{{ $vendor->mobile }}" name="mobile">
+                        <input type="number" class="form-control" value="{{ $vendor->mobile }}" name="mobile">
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Address</label>
-                        <input type="address" class="form-control" value="{{ $vendor->address }}" name="address">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label>Registered Vendor No.</label>
-                        <input type="text" class="form-control" value="{{ $vendor->register_number }}" name="register_number">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>Firm name</label>
-                        <input type="text" class="form-control" value="{{ $vendor->firm_name }}" name="firm_name">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label>GST No.</label>
-                        <input type="text" class="form-control" value="{{ $vendor->gst_number }}" name="gst_number">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>Alternate Number</label>
+                        <label>Altername Number</label>
                         <input type="number" class="form-control" value="{{ $vendor->alt_number }}" name="alt_number">
                     </div>
                 </div>
-                <button type="submit" name="submit" class="btn btn-primary error-w3l-btn mt-sm-5 mt-3 px-4">Submit</button>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>GST No.</label>
+                        <input type="text" class="form-control" value="{{ $vendor->gst_number }}" name="gst_number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Items Dealing : </label>
+                        <select name="item_id[]" class="form-control" multiple>
+                        	<option disabled="">Select Items</option>
+                        	@foreach($items as $item)
+                        		<?php 
+															$itemid = json_decode($vendor->item_id);
+														?>
+                        		<option value="{{ $item->id }}" @if(in_array($item->id,$itemid)) selected @endif >{{ $item->title }}</option>
+                        	@endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Address</label>
+                        <textarea name="address" class="form-control" rows="5" placeholder="Address">{{ $vendor->address }}</textarea>
+                    </div>
+                </div>
+								<button type="submit" name="submit" class="btn btn-primary error-w3l-btn px-4">Submit</button>
             </form>
         </div>
     </div>

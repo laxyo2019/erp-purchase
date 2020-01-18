@@ -151,16 +151,9 @@
   </li>
 
 	<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-      <i class="fas fa-fw fa-cog"></i>
-      <span>Request For Quotation</span>
-    </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="{{ route('rfq.create') }}">Create RFQ</a>
-        <a class="collapse-item" href="{{ route('rfq.index') }}">RFQ Listing</a>
-      </div>
-    </div>
+    <a class="nav-link" href="{{ route('rfq.index') }}">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>View Request Quotations</span></a>
   </li>
   @endrole
 

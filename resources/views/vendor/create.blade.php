@@ -57,6 +57,17 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
+                        <label>Items Dealing : </label>
+                        <select name="item_id[]" class="form-control" multiple>
+                        	<option disabled="">Select Items</option>
+                        	@foreach($items as $item)
+                        		<option value="{{ $item->id }}">{{ $item->title }}</option>
+                        	@endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
                         <label>Address</label>
                         <textarea name="address" class="form-control" rows="5" placeholder="Address"></textarea>
                     </div>

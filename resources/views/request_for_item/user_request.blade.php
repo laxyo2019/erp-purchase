@@ -13,8 +13,9 @@
                 <p>{{ $message }}</p>
             </div>
         @endif
+        <?php //dd($MailStatus[0]->id); die; ?>
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-          <thead>
+        	<thead>
             <tr>
               <th>S.No</th>
               <th>Item Requirement</th>
@@ -28,7 +29,7 @@
           <tbody>
           	@if (!empty($request_for_items))
             	@foreach($request_for_items as $row)
-            	<tr>
+            	<tr id="bgclr{{$row->id}}">
                 <td>{{ ++$i }}</td>
                 <td>
                 	{{-- $mem_details['first_name'] }} {{ $mem_details['last_name'] --}} Users are generated new items request</td>
@@ -59,12 +60,25 @@
 									</center>
                 </td>
                 <td>
-                  <a class="btn btn-primary" href="{{ route('user_req_status', $row->id) }}"><i class="fa fa-eye"></i></a>
+                  <a class="btn btn-primary disbtn{{$row->id}}" href="{{ route('user_req_status', $row->id) }}"><i class="fa fa-eye"></i></a>
                   @if($row->level2_status == 1)
-                  <a class="btn btn-success" href="{{ route('applyforquotation', $row->id) }}"><i class="fa fa-eye"></i></a>
+                  <a class="btn btn-success disbtn{{$row->id}}" href="{{ route('applyforquotation', $row->id) }}" title="Apply for Quotation">Apply</a>
                   @endif
                 </td>
               </tr>
+              	@foreach($MailStatus as $key)
+              		@if($key->quotion_sent_id == $row->id)
+              		<style>
+	              		#bgclr{{$row->id}}{
+	              			background-color: #dcdab2;
+	              			opacity: 0.4;
+	              		}
+	              		.disbtn{{$row->id}}{
+	              			pointer-events:none;
+	              		}
+									</style>
+							    @endif
+							  @endforeach
               @endforeach
             @endif
           </tbody>
@@ -75,3 +89,4 @@
   </div>
 </div>
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

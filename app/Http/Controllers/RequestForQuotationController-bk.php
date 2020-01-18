@@ -6,7 +6,6 @@ use App\RequestForQuotation;
 use Illuminate\Http\Request;
 use Auth;
 use App\Member;
-use App\VendorsMailSend;
 use App\User;
 use App\Notifications\RFQ_Notification;
 
@@ -25,8 +24,8 @@ class RequestForQuotationController extends Controller
     public function index()
     {	
     		$user_id = Auth::user()->id;
-        $rfq = RequestForQuotation::where('user_id',$user_id)->latest()->paginate(10);
-        return view('rfq.index',compact('rfq'))->with('i', (request()->input('page', 1) - 1) * 10);
+        $request_for_quotation = RequestForQuotation::where('user_id',$user_id)->latest()->paginate(10);
+        return view('rfq.index',compact('request_for_quotation'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -124,9 +123,5 @@ class RequestForQuotationController extends Controller
     {
         RequestForQuotation::find($id)->delete();
         return redirect()->route('rfq.index')->with('success','Your RFQ deleted successfully');
-    }
-
-    public function VendorRFQFormData(){
-    		return view('rfq.vendor_form');
     }
 }

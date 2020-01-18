@@ -19,28 +19,29 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label>Brand</label>
+                        <label>Category</label>
+                        @foreach ($category as $categorys)
+                            @if($item->category_id == $categorys->id)
+                                <input type="text" class="form-control" value="{{ $categorys->name }}" readonly="">
+                            @endif
+                        @endforeach
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label>Subcategory</label>
                         @foreach ($brand as $brands)
                             @if($item->brand == $brands->id)
                                 <input type="text" class="form-control" value="{{ $brands->name }}" readonly="">
                             @endif
                         @endforeach
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-md-6">
                         <label>Department</label>
                         @foreach ($department as $departments)
                             @if($item->department == $departments->id)
                                 <input type="text" class="form-control" value="{{ $departments->name }}" readonly="">
-                            @endif
-                        @endforeach
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label>Category</label>
-                        @foreach ($category as $categorys)
-                            @if($item->category_id == $categorys->id)
-                                <input type="text" class="form-control" value="{{ $categorys->name }}" readonly="">
                             @endif
                         @endforeach
                     </div>

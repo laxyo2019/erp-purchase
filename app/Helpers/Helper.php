@@ -22,4 +22,12 @@
         	return $getAutoIncrementId[0]->auto_increment;
         	//print_r($id); die;
 	    }
+
+	    public static function getRFQSendMailAutoIncrementId()
+	    {
+	    		$db = DB::connection()->getDatabaseName();
+        	$getRFQSendMailAutoIncrementId = DB::select(DB::raw("SELECT auto_increment FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'vendors_mail_sends' and TABLE_SCHEMA = '".$db."'"));
+        	return $getRFQSendMailAutoIncrementId[0]->auto_increment;
+        	//print_r($id); die;
+	    }
 	}

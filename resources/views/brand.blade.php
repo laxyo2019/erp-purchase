@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
   <a href="{{ '/home' }}" class="main-title-w3layouts mb-2 float-right"><i class="fa fa-arrow-left"></i>  Back</a>
-  <h5 class="main-title-w3layouts mb-2">Brand List</h5>
+  <h5 class="main-title-w3layouts mb-2">Subcategory List</h5>
   <div class="card shadow mb-4">
     <div class="card-body">
       <div class="table-responsive">
@@ -20,7 +20,8 @@
           <thead>
             <tr>
               <th>S.No</th>
-              <th>Name</th>
+              <th>Category</th>
+              <th>Subcategory</th>
               <th>Description</th>
               <th>Action</th>
             </tr>
@@ -30,6 +31,7 @@
               @foreach ($brand as $row)
               <tr>
                 <td>{{ ++$i }}</td>
+                <td>{{ $row->category->name }}</td>
                 <td>{{ $row->name }}</td>
                 <td>{{ $row->description }}</td>
                 <td>
@@ -59,19 +61,28 @@
     <div class="modal-dialog">
     	<div class="modal-content">
 	        <div class="modal-header">
-	          <h4 class="modal-title">Add Brand</h4>
+	          <h4 class="modal-title">Add Subcategory</h4>
 	        </div>
 	        <div class="modal-body">
 	          	<form action="" method="" id="addForm">
 		            @csrf
 		            <div class="row">
+		            		<div class="form-group col-md-12">
+		                    <label>Category</label>
+		                    <select name="category_id" class="form-control">
+		                    	<option value="0" selected="" disabled="">Select Category</option>
+		                    	@foreach($item_category as $cat)
+		                    		<option value="{{ $cat->id }}">{{ $cat->name }}</option>
+		                    	@endforeach
+		                    </select>
+		                </div>
 		                <div class="form-group col-md-12">
 		                    <label>Name</label>
-		                    <input type="text" class="form-control" placeholder="brand Name" id="name" name="name">
+		                    <input type="text" class="form-control" placeholder="Subcategory Name" id="name" name="name">
 		                </div>
                     <div class="form-group col-md-12">
                         <label>Description</label>
-                        <textarea class="form-control" rows="3" id="description" name="description" placeholder="Brand Description"></textarea>
+                        <textarea class="form-control" rows="3" id="description" name="description" placeholder="Subcategory Description"></textarea>
                     </div>
 		            </div>
 		            <button type="submit" name="submit" id="addUnit" class="btn btn-primary float-right">Submit</button>
@@ -89,13 +100,21 @@
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Update Brand</h4>
+          <h4 class="modal-title">Update Subcategory</h4>
         </div>
         <div class="modal-body">
           <form id="updateForm{{ $row->id }}">
             @csrf
             @method('PUT')
             <div class="row">
+              <div class="form-group col-md-12">
+                  <label>Category</label>
+                  <select name="category_id" class="form-control">
+                  	@foreach($item_category as $cat)
+                  		<option value="{{ $cat->id }}" @if($cat->id == $row->category_id) selected @endif >{{ $cat->name }}</option>
+                  	@endforeach
+                  </select>
+              </div>
               <div class="form-group col-md-12">
                 <label>Name</label>
                 <input type="text" class="form-control" value="{{ $row->name }}" id="name" name="name">
@@ -122,7 +141,7 @@ $(document).ready(function() {
           url: "brand/"+id,
           data: $('#updateForm{{ $row->id }}').serialize(),
           success: function(data) {
-              alert('Brand Updated');
+              alert('Subcategory Updated');
               location.reload();
           },
       });

@@ -32,31 +32,32 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label>Select Brand</label>
-                        <select name="brand" class="form-control">
-                            <option disabled="" selected="">Select brand</option>
-                            @foreach ($brand as $brands)
-                                <option value="{{ $brands->id }}" @if($brands->id == $item->brand) selected @endif>{{ $brands->name }}</option>
+                        <label>Select Category</label>
+                        <select name="category_id" class="form-control">
+                            <option disabled="" selected="">Select Category</option>
+                            @foreach ($category as $categorys)
+                                <option value="{{ $categorys->id }}" @if($categorys->id == $item->category_id) selected @endif>{{ $categorys->name }}</option>
                             @endforeach
                         </select>
                     </div>
+                    
                     <div class="form-group col-md-6">
-                        <label>Select department</label>
-                        <select name="department" class="form-control">
-                            <option disabled="" selected="">Select department</option>
-                            @foreach ($department as $departments)
-                                <option value="{{ $departments->id }}" @if($departments->id == $item->department) selected @endif>{{ $departments->name }}</option>
+                        <label>Select Subcategory</label>
+                        <select name="brand" class="form-control">
+                            <option disabled="" selected="">Select Subcategory</option>
+                            @foreach ($brand as $brands)
+                                <option value="{{ $brands->id }}" @if($brands->id == $item->brand) selected @endif>{{ $brands->name }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label>Select Category</label>
-                        <select name="category_id" class="form-control">
-                            <option disabled="" selected="">Select Category</option>
-                            @foreach ($category as $categorys)
-                                <option value="{{ $categorys->id }}" @if($categorys->id == $item->category_id) selected @endif>{{ $categorys->name }}</option>
+                        <label>Select department</label>
+                        <select name="department" class="form-control">
+                            <option disabled="" selected="">Select department</option>
+                            @foreach ($department as $departments)
+                                <option value="{{ $departments->id }}" @if($departments->id == $item->department) selected @endif>{{ $departments->name }}</option>
                             @endforeach
                         </select>
                     </div>

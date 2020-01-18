@@ -16,7 +16,7 @@
                     </ul>
                 </div>
             @endif
-						
+						<?php //print($requestForItem->requested_role); die; ?>
             <form action="{{ route('user_req_update',$requestForItem->id) }}" method="post">
                 @csrf
                 @method('PUT')
@@ -90,14 +90,14 @@
 			            </tr>
 			            <?php } ?>
 			          </table>
-			          @if($requestForItem->level1_status == 0)
+			          @if($requestForItem->level1_status == 0 && $requestForItem->requested_role != 'Manager')
 			          <div align="right">
 			            <button type="button" name="add_row" id="add_row" class="btn btn-success btn-xs">+</button>
 			          </div>
 			          @endif
 			          <input type="hidden" name="user_id" value="{{ $row->user_id }}" />
 			          <input type="hidden" name="req_user_table_id" value="{{ $requestForItem->id }}" />
-			          @if($requestForItem->level1_status == 0)
+			          @if($requestForItem->level1_status == 0 && $requestForItem->requested_role != 'Manager')
                 	<button type="submit" name="submit" class="btn btn-primary error-w3l-btn px-4">Submit</button>
                 @else
 									<button disabled="" class="btn btn-primary error-w3l-btn px-4">Submit</button>

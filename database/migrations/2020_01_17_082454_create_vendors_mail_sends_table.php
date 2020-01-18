@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBrandsTable extends Migration
+class CreateVendorsMailSendsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateBrandsTable extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('vendors_mail_sends', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('category_id')->default('0');
-            $table->string('name');
-            $table->text('description');
+            $table->string('email');
+            $table->string('quotion_id');
+            $table->text('item_list');
+            $table->integer('quotion_sent_id');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateBrandsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('vendors_mail_sends');
     }
 }

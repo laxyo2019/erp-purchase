@@ -6,10 +6,16 @@ use App\RequestForItem;
 use Illuminate\Http\Request;
 use Auth;
 use App\Member;
+use App\vendor;
 use App\RfiUsers;
 use App\RfiManager;
 use App\User;
+use App\VendorsMailSend;
 use App\Notifications\RFQ_Notification;
+use \App\Mail\SendMailToVendors;
+use Laravel\LegacyEncrypter\McryptEncrypter;
+use PDF;
+use DB;
 
 class RequestForItemController extends Controller
 {
@@ -145,9 +151,12 @@ class RequestForItemController extends Controller
     public function UsersRequest()
     {
     		$uid = Auth::user()->id;
-    		//$request_for_items = RfiUsers::where('user_id','!=',$uid)->latest()->paginate(10);
     		$request_for_items = RfiUsers::latest()->paginate(10);
-    		return view('request_for_item.user_request', compact('request_for_items', 'mem_details'))->with('i', (request()->input('page', 1) - 1) * 10);
+    		foreach ($request_for_items as $key) {
+    			$mid = $key->id;
+    			$MailStatus = VendorsMailSend::where('quotion_sent_id',$mid)->get();
+    		}
+    		return view('request_for_item.user_request', compact('request_for_items', 'MailStatus'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function UsersRequestStatus(Request $request, $id)
@@ -156,14 +165,14 @@ class RequestForItemController extends Controller
     		$data = RfiUsers::where('id',$id)->get();
         foreach ($data as $requestForItem) {
         	$requested_user_id = $requestForItem->user_id;
-        	if($requested_user_id != $loggedin_Id){
+        	//if($requested_user_id != $loggedin_Id){
 	        	$mem = Member::where('user_id',$requested_user_id)->get();
 	    			foreach ($mem as $mem_details) {
 	        		return view('request_for_item.user_req_status',compact('requestForItem', 'mem_details'));
 	        	}
-	        }else{
+	        /*}else{
 	        		return redirect()->route('user_request');
-	        }
+	        }*/
         }
     }
 
@@ -201,6 +210,7 @@ class RequestForItemController extends Controller
     public function ApplyForQuotation($id)
     {
     		$data = RfiUsers::where('id',$id)->get();
+    		$vendor = vendor::all();
 	  		$role = $data[0]->requested_role;
 	  		if($role == 'Manager'){
 	  			$status = 0;
@@ -208,6 +218,42 @@ class RequestForItemController extends Controller
 	  			$status = 1;
 	  		}
 	  		$requested = RfiUsers::where('id',$id)->where('requested_role',$role)->where('manager_status',$status)->get();
-	  		return view('request_for_item.applyforquotation',compact('requested'));
+	  		return view('request_for_item.applyforquotation',compact('requested','vendor'));
+    }
+
+    public function RfiQuotationToMail(Request $request, $id){
+    		//$email = $request->vendor_name;
+    		$vendor_id = $request->vendor_id;
+    		foreach ($vendor_id as $vendor_ids) {
+    			$vendor = vendor::find($vendor_ids);
+    			$tbl = $request->table;
+    			$pdf = PDF::loadView('request_for_item.rfi_quotation', compact('tbl'));
+    			$pdf = $pdf->Output('', 'S');
+    			//$pdf->stream('rfi_quotation'.date("d-M-Y").'.pdf', array("Attachment" => False));
+
+    			$rfq = RfiUsers::find($id);
+    			$autoId = DB::select(DB::raw("SELECT nextval('vendors_mail_sends_id_seq')"));
+  				$nextval = $autoId[0]->nextval+1;
+  				//$nextval = Helper::getRFQSendMailAutoIncrementId();
+    			$data = array(
+    					'email'		=>		json_encode($vendor_id),
+    					'quotion_id'	=>	'#RFI'.str_pad($nextval, 4, '0', STR_PAD_LEFT),
+    					'quotion_sent_id' => $id,
+    					'item_list'		=>	$rfq->requested_data
+    			);
+    			$datas = VendorsMailSend::create($data);
+    			$quotion_id = $datas->id;
+    			$details = array(
+    				'table' => $request->table,
+    				'name' => $vendor->name,
+    				'email' => $vendor->email,
+    				'pdf' => $pdf,
+    				'quotion_id' => $quotion_id,
+    				'vendor_id' => $vendor->id,
+    			);
+    			\Mail::to($vendor->email)->send(new SendMailToVendors($details));
+
+    			return redirect()->route('user_request')->with('success','Mail sends successfully');
+    		}
     }
 }

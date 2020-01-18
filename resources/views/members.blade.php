@@ -77,10 +77,12 @@
 							        <div class="form-group col-md-6">
 						              <strong>First Name:</strong>
 						              <input type="text" name="first_name" class="form-control" placeholder="First Name">
+						              <span id="first_name"></span>
 						          </div>
 						          <div class="form-group col-md-6">
 						              <strong>Last Name:</strong>
 						              <input type="text" name="last_name" class="form-control" placeholder="Last Name">
+						              <span id="last_name"></span>
 						          </div>
 							    </div>
 							    <div class="row">
@@ -88,6 +90,7 @@
 							            <div class="form-group">
 							                <strong>Email:</strong>
 							                <input type="text" name="email" class="form-control" placeholder="Email">
+							                <span id="email"></span>
 							            </div>
 							        </div>
 							    </div>
@@ -101,6 +104,7 @@
 							                		<option value="{{ $roles->id }}">{{ $roles->name }}</option>
 							                	@endforeach
 							                </select>
+							                <span id="role_id"></span>
 							            </div>
 							        </div>
 							    </div>
@@ -109,12 +113,14 @@
 							            <div class="form-group">
 							                <strong>Phone No.:</strong>
 							                <input type="text" name="phone" class="form-control" placeholder="Phone No.">
+							                <span id="phone"></span>
 							            </div>
 							        </div>
 							        <div class="col-md-6">
 							            <div class="form-group">
 							                <strong>Password:</strong>
 							                <input type="password" name="password" class="form-control" placeholder="Password">
+							                <span id="password"></span>
 							            </div>
 							        </div>
 							    </div>
@@ -143,10 +149,12 @@
 				        <div class="form-group col-md-6">
 			              <strong>First Name:</strong>
 			              <input type="text" name="first_name" class="form-control" value="{{ $row->first_name }}">
+			              <span id="update_first_name"></span>
 			          </div>
 			          <div class="form-group col-md-6">
 			              <strong>Last Name:</strong>
 			              <input type="text" name="last_name" class="form-control" value="{{ $row->last_name }}">
+			              <span id="update_last_name"></span>
 			          </div>
 				    </div>
 				    <div class="row">
@@ -154,6 +162,7 @@
 				            <div class="form-group">
 				                <strong>Email:</strong>
 				                <input type="text" name="email" class="form-control" value="{{ $row->email }}">
+				                <span id="update_email"></span>
 				            </div>
 				        </div>
 				    </div>
@@ -166,6 +175,7 @@
 				                		<option value="{{ $roles->id }}" @if($row->role_id == $roles->id) {{ 'selected' }} @endif >{{ $roles->name }}</option>
 				                	@endforeach
 				                </select>
+				                <span id="update_role_id"></span>
 				            </div>
 				        </div>
 				    </div>
@@ -174,6 +184,7 @@
 				            <div class="form-group">
 				                <strong>Phone No.:</strong>
 				                <input type="text" name="phone" class="form-control" value="{{ $row->phone }}">
+				                <span id="update_phone"></span>
 				            </div>
 				        </div>
 				        <div class="col-md-6">
@@ -197,14 +208,27 @@
 $(document).ready(function() {
    $("#updateForm{{ $row->id }}").on('submit', function(e) {
       e.preventDefault();
+      $('#update_first_name').html('');
+			$('#update_last_name').html('');
+			$('#update_email').html('');
+			$('#update_role_id').html('');
+			$('#update_phone').html('');
       var id = '{{ $row->id }}';
       $.ajax({
           type: 'post',
           url: "members/"+id,
           data: $('#updateForm{{ $row->id }}').serialize(),
           success: function(data) {
-              alert(data);
-              location.reload();
+          	if(data == 'success') {
+	        		alert('Member details updated successfully');
+	            location.reload();
+	        	}else{
+	        		var json = JSON.parse(data);
+	        		$.each(json, function (key, val) {
+	        				alert(val);
+	        				$('#update_'+key).html('<span style="color:red">'+val+'</span>');
+							});
+	        	}
           },
       });
   });
@@ -216,13 +240,26 @@ $(document).ready(function() {
 $(document).ready(function() {
    $("#addForm").on('submit', function(e) {
    		e.preventDefault();
+   		$('#first_name').html('');
+			$('#last_name').html('');
+			$('#email').html('');
+			$('#role_id').html('');
+			$('#phone').html('');
+			$('#password').html('');
  		$.ajax({
 	        type: 'post',
 	        url: '/members',
 	        data: $('#addForm').serialize(),
 	        success: function(data) {
-            	alert(data);
-            	location.reload();
+	        	if(data == 'success') {
+	        		alert('Member Added successfully');
+	            location.reload();
+	        	}else{
+	        		var json = JSON.parse(data);
+	        		$.each(json, function (key, val) {
+	        				$('#'+key).html('<span style="color:red">'+val+'</span>');
+							});
+	        	}
 	        },
 	    });
 	});

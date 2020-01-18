@@ -6,48 +6,60 @@
     <h5 class="main-title-w3layouts mb-2">Show Vendor</h5>
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="" method="">
+        		<form action="" method="">
+								<div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Registered Vendor Number</label>
+                        <input type="text" class="form-control"  value="{{ $vendor->register_number }}" name="register_number" readonly="">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Firm Name</label>
+                        <input type="text" class="form-control"  value="{{ $vendor->firm_name }}" name="firm_name" readonly="">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Vendor Name</label>
-                        <input class="form-control" value="{{ $vendor->name }}" readonly="">
+                        <input type="text" class="form-control"  value="{{ $vendor->name }}" name="name" readonly="">
                     </div>
                     <div class="form-group col-md-6">
                         <label>Email</label>
-                        <input class="form-control" value="{{ $vendor->email }}" readonly="">
+                        <input type="email" class="form-control"  value="{{ $vendor->email }}" name="email" readonly="">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Mobile No.</label>
-                        <input type="mobile" class="form-control" value="{{ $vendor->mobile }}" readonly="">
+                        <input type="number" class="form-control"  value="{{ $vendor->mobile }}" name="mobile" readonly="">
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Registerd vendor no</label>
-                        <input class="form-control" value="{{ $vendor->register_number }}" readonly="">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label>Alternate No.</label>
-                        <input type="name" class="form-control" value="{{ $vendor->alt_number }}" readonly="">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>Firm Name</label>
-                        <input class="form-control" value="{{ $vendor->firm_name }}" readonly="">
+                        <label>Altername Number</label>
+                        <input type="number" class="form-control"  value="{{ $vendor->alt_number }}" name="alt_number" readonly="">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-6">
-                        <label>GST Number</label>
-                        <input class="form-control" value="{{ $vendor->gst_number }}" readonly="">
+                    <div class="form-group col-md-12">
+                        <label>GST No.</label>
+                        <input type="text" class="form-control"  value="{{ $vendor->gst_number }}" name="gst_number" readonly="">
                     </div>
-                    <div class="form-group col-md-6">
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Items Dealing : </label>
+                        <select name="item_id[]" class="form-control" multiple readonly="">
+                        	@foreach($items as $item)
+                        		<option value="{{ $item->id }}">{{ $item->title }}</option>
+                        	@endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
                         <label>Address</label>
-                        <input class="form-control" value="{{ $vendor->address }}" readonly="">
+                        <textarea name="address" class="form-control" rows="5" placeholder="Address" readonly="">{{ $vendor->address }}</textarea>
                     </div>
                 </div>
-            </form>
+						</form>
         </div>
     </div>
 </div>
