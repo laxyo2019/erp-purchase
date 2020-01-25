@@ -16,6 +16,7 @@ use \App\Mail\SendMailToVendors;
 use Laravel\LegacyEncrypter\McryptEncrypter;
 use PDF;
 use DB;
+use Helper;
 
 class RequestForItemController extends Controller
 {
@@ -154,7 +155,8 @@ class RequestForItemController extends Controller
     		$request_for_items = RfiUsers::latest()->paginate(10);
     		foreach ($request_for_items as $key) {
     			$mid = $key->id;
-    			$MailStatus = VendorsMailSend::where('quotion_sent_id',$mid)->get();
+    			//$MailStatus = VendorsMailSend::where('quotion_sent_id',$mid)->get();
+    			$MailStatus = VendorsMailSend::all();
     		}
     		return view('request_for_item.user_request', compact('request_for_items', 'MailStatus'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -237,7 +239,7 @@ class RequestForItemController extends Controller
   				//$nextval = Helper::getRFQSendMailAutoIncrementId();
     			$data = array(
     					'email'		=>		json_encode($vendor_id),
-    					'quotion_id'	=>	'#RFI'.str_pad($nextval, 4, '0', STR_PAD_LEFT),
+    					'quotion_id'	=>	'#RFQ'.str_pad($nextval, 4, '0', STR_PAD_LEFT),
     					'quotion_sent_id' => $id,
     					'item_list'		=>	$rfq->requested_data
     			);

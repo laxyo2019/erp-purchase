@@ -16,7 +16,11 @@
                     </ul>
                 </div>
             @endif
-						                        		
+						<?php
+							$gsts = $vendor->gst_number;
+							$gst_state_no = substr($gsts, 0, 2);
+							$gst_no = substr($gsts, 2, $gsts);
+						?>                        		
             <form action="{{ route('vendor.update',$vendor->id) }}" method="post">
                 @csrf
                 @method('PUT')
@@ -51,9 +55,18 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>GST State Code</label>
+                        <select class="form-control" name="gst_state_code">
+                        	@foreach($gst as $gst_state)
+                        	<?php $gst_id = str_pad($gst_state->id, 2, '0', STR_PAD_LEFT); ?>
+                        		<option value="{{ $gst_id }}" @if($gst_state_no==$gst_id) selected @endif >{{ $gst_id }} | {{ $gst_state->state_name }}</option>
+                        	@endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label>GST No.</label>
-                        <input type="text" class="form-control" value="{{ $vendor->gst_number }}" name="gst_number">
+                        <input type="text" class="form-control" value="{{ $gst_no }}" name="gst_number">
                     </div>
                 </div>
                 <div class="row">

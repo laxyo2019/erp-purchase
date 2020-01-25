@@ -86,6 +86,12 @@
       <span>Request for Items</span></a>
   </li>
 
+  <li class="nav-item">
+    <a class="nav-link" href="{{ route('quotation_received_leveltwo') }}">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Received Quotation</span></a>
+  </li>
+
 	{{-- <li class="nav-item">
     <a class="nav-link" href="{{ route('purchase.index') }}">
       <i class="fas fa-fw fa-chart-area"></i>
@@ -113,6 +119,7 @@
         <a class="collapse-item" href="{{ '/um' }}">Units of Measurement</a>
         <a class="collapse-item" href="{{ '/category' }}">Items Category</a>
         <!-- <a class="collapse-item" href="{{ '/location' }}">Location</a> -->
+        <a class="collapse-item" href="{{ '/gst_state_code' }}">GST States</a>
         <a class="collapse-item" href="{{ '/department' }}">Department</a>
         <a class="collapse-item" href="{{ '/brand' }}">Brand</a>
       </div>
@@ -127,6 +134,11 @@
     <a class="nav-link" href="{{ route('manager_approval') }}">
       <i class="fas fa-fw fa-chart-area"></i>
       <span>RFI by Users</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ route('quotation_received_levelone') }}">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Received Quotation</span></a>
   </li>
 	@endrole
 
@@ -154,6 +166,12 @@
     <a class="nav-link" href="{{ route('rfq.index') }}">
       <i class="fas fa-fw fa-chart-area"></i>
       <span>View Request Quotations</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{{ route('approval_quotation') }}">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Approval Quotation</span></a>
   </li>
   @endrole
 

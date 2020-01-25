@@ -20,11 +20,7 @@
             <form action="{{ route('vendor.store') }}" method="post">
                 @csrf
                 <div class="row">
-                    <div class="form-group col-md-6">
-                        <label>Registered Vendor Number</label>
-                        <input type="text" class="form-control" placeholder="Registered number" name="register_number">
-                    </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         <label>Firm Name</label>
                         <input type="text" class="form-control" placeholder="Firm name...." name="firm_name">
                     </div>
@@ -50,7 +46,17 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>GST State Code</label>
+                        <select class="form-control" name="gst_state_code">
+                        	<option disabled="" selected="">Select GST State Code</option>
+                        	@foreach($gst as $gst_state)
+                        		<?php $gst_id = str_pad($gst_state->id, 2, '0', STR_PAD_LEFT); ?>
+                        		<option value="{{ $gst_id }}">{{ $gst_id }} | {{ $gst_state->state_name }}</option>
+                        	@endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label>GST No.</label>
                         <input type="text" class="form-control" placeholder="GST Number" name="gst_number">
                     </div>

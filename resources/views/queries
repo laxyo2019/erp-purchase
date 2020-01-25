@@ -1,0 +1,9 @@
+<!-- pgsql json_extract data query -->
+	SELECT items::json->'item_total_amount' as sum
+	FROM quotation_receiveds 
+	WHERE vender_id = '3'
+<!-- pgsql json_extract data query -->
+
+<!-- mysql json_extract data with sum query -->
+	SELECT SUM(json_extract(item_list,'$.item_total_amount')) AS sum FROM vendors_mail_sends
+<!-- mysql json_extract data with sum query -->

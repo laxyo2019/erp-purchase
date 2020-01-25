@@ -21,7 +21,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // for Quotation
 
-Route::get('vendor_form/{id}/{vid}', 'RequestForQuotationController@VendorRFQFormData')->name('vendor_form');
+Route::get('vendor_form/{id}/{vid}', 'QuotationReceivedController@VendorRFQFormData')->name('vendor_form');
+Route::post('vendorformstore/{id}/{vid}', 'QuotationReceivedController@VendorRFQFormDataStore')->name('vendorformstore');
 
 
 /*Route::resource('quotation', 'QuotationController');
@@ -35,6 +36,10 @@ Route::group(['middleware' => ['role:level_1']], function () {
     Route::get('manager_approval', 'LevelOne@ManagerApproval')->name('manager_approval');
     Route::get('edit_levelone_approval/{id}', 'LevelOne@LevelOneApproval')->name('edit_levelone_approval');
     Route::put('update_levelone_approval/{id}', 'LevelOne@UpdateLevelOneApproval')->name('update_levelone_approval');
+
+    Route::get('quotation_received_levelone', 'QuotationReceivedController@QuotationReceivedAtLevelOne')->name('quotation_received_levelone');
+    Route::get('qa_level_one/{id}', 'QuotationReceivedController@QuotationApprovalByLevelOne')->name('qa_level_one');
+    Route::post('QuotationApprovalL1', 'QuotationReceivedController@QuotationApprovalByL1')->name('QuotationApprovalL1');
 });
 
 Route::group(['middleware' => ['role:lavel_2']], function () {
@@ -42,6 +47,7 @@ Route::group(['middleware' => ['role:lavel_2']], function () {
 		Route::resource('/um', 'UnitofmeasurementController');
 		Route::resource('/role', 'RoleController');
 		Route::resource('/category', 'ItemCategoryController');
+		Route::resource('/gst_state_code', 'GSTStateCodeController');
 		Route::resource('/members', 'MemberController');
 		Route::resource('/location', 'LocationController');
 		Route::resource('item', 'ItemController');
@@ -64,6 +70,11 @@ Route::group(['middleware' => ['role:lavel_2']], function () {
 		Route::get('items_approval', 'LevelTwo@LevelTwoApproval')->name('items_approval');
 		Route::get('edit_leveltwo_approval/{id}', 'LevelTwo@EditLevelTwoApproval')->name('edit_leveltwo_approval');
     Route::put('update_leveltwo_approval/{id}', 'LevelTwo@UpdateLevelTwoApproval')->name('update_leveltwo_approval');
+
+    Route::get('quotation_received_leveltwo', 'QuotationReceivedController@QuotationReceivedAtLevelTwo')->name('quotation_received_leveltwo');
+    Route::get('qa_level_two/{id}', 'QuotationReceivedController@QuotationApprovalByLevelTwo')->name('qa_level_two');
+    Route::post('QuotationApprovalL2', 'QuotationReceivedController@QuotationApprovalByL2')->name('QuotationApprovalL2');
+
 });
 
 Route::group(['middleware' => ['role:purchase_manager']], function () {
@@ -75,12 +86,16 @@ Route::group(['middleware' => ['role:assistant_manager|users|purchase_manager']]
 });
 
 Route::group(['middleware' => ['role:assistant_manager|purchase_manager']], function () {
-    Route::resource('rfq', 'RequestForQuotationController');
+    Route::resource('rfq', 'QuotationReceivedController');
     Route::get('user_request', 'RequestForItemController@UsersRequest')->name('user_request');
     Route::get('user_req_status/{id}', 'RequestForItemController@UsersRequestStatus')->name('user_req_status');
     Route::put('user_req_update/{id}', 'RequestForItemController@UsersRequestUpdate')->name('user_req_update');
     Route::get('applyforquotation/{id}', 'RequestForItemController@ApplyForQuotation')->name('applyforquotation');
     Route::post('rfiquotationtomail/{id}', 'RequestForItemController@RfiQuotationToMail')->name('rfiquotationtomail');
+    Route::get('receivedQuotation/{id}', 'QuotationReceivedController@ReceivedQuotation')->name('receivedQuotation');
+    Route::post('QuotationApproval', 'QuotationReceivedController@QuotationApproval')->name('QuotationApproval');
+    Route::get('approval_quotation', 'QuotationReceivedController@ApprovalQuotation')->name('approval_quotation');
+    Route::get('approvalQuotation_item/{id}', 'QuotationReceivedController@ApprovalQuotationItems')->name('approvalQuotation_item');
 });
 
 Route::group(['middleware' => ['role:users']], function () {

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\vendor;
 use App\item;
+use App\GST_State_Code;
 use Illuminate\Http\Request;
 
 class VendorController extends Controller
@@ -32,7 +34,8 @@ class VendorController extends Controller
     public function create()
     {
     		$items = item::all();
-        return view('vendor.create', compact('items'));
+    		$gst = DB::table('gst_state_codes')->get();
+        return view('vendor.create', compact('items','gst'));
     }
 
     /**
@@ -48,19 +51,23 @@ class VendorController extends Controller
             'email' => '',
             'mobile' => 'required|numeric|unique:vendors',
             'address' => 'required',
-            'register_number' => 'required|unique:vendors',
             'firm_name' => 'required',
             'item_id' => 'required',
-            'gst_number' => 'required|unique:vendors'
+            'gst_number' => 'required|unique:vendors',
+            'gst_state_code' => 'required'
         ]);
   			
+        $ids = DB::select(DB::raw("SELECT nextval('vendors_id_seq')"));
+  			$id = $ids[0]->nextval+1;
+  			//$id = Helper::getVendorAutoIncrementId();
+
   			$data = array(
   					'name' => $request->name,
   					'email' => $request->email,
   					'mobile' => $request->mobile,
-  					'register_number' => $request->register_number,
+  					'register_number' => $request->gst_state_code.'00'.str_pad($id, 4, '0', STR_PAD_LEFT),
   					'firm_name' => $request->firm_name,
-  					'gst_number' => $request->gst_number,
+  					'gst_number' => $request->gst_state_code.$request->gst_number,
   					'alt_number' => $request->alt_number,
   					'address' => $request->address,
   					'item_id' => json_encode($request->item_id),
@@ -96,7 +103,8 @@ class VendorController extends Controller
     public function edit(vendor $vendor)
     {
         $items = item::all();
-        return view('vendor.edit',compact('vendor','items'));
+        $gst = DB::table('gst_state_codes')->get();
+        return view('vendor.edit',compact('vendor','items','gst'));
     }
 
     /**
@@ -115,7 +123,8 @@ class VendorController extends Controller
             'address' => 'required',
             'register_number' => 'required',
             'firm_name' => 'required',
-            'gst_number' => 'required'
+            'gst_number' => 'required',
+            'gst_state_code' => 'required'
         ]);
   				
   			$data = array(
@@ -123,7 +132,7 @@ class VendorController extends Controller
   					'email' => $request->email,
   					'mobile' => $request->mobile,
   					'firm_name' => $request->firm_name,
-  					'gst_number' => $request->gst_number,
+  					'gst_number' => $request->gst_state_code.$request->gst_number,
   					'alt_number' => $request->alt_number,
   					'address' => $request->address,
   					'item_id' => json_encode($request->item_id),

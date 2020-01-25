@@ -66,19 +66,23 @@
                   @endif
                 </td>
               </tr>
-              	@foreach($MailStatus as $key)
-              		@if($key->quotion_sent_id == $row->id)
-              		<style>
-	              		#bgclr{{$row->id}}{
-	              			background-color: #dcdab2;
-	              			opacity: 0.4;
-	              		}
-	              		.disbtn{{$row->id}}{
-	              			pointer-events:none;
-	              		}
-									</style>
-							    @endif
-							  @endforeach
+              	<?php
+	              	foreach($MailStatus as $key){
+	              		if($key->quotion_sent_id == $row->id){
+	              ?>
+            		<style>
+              		#bgclr{{$row->id}}{
+              			background-color: #dcdab2;
+              			opacity: 0.4;
+              		}
+              		.disbtn{{$row->id}}{
+              			pointer-events:none;
+              		}
+								</style>
+								<?php
+								    }
+								  }
+							  ?>
               @endforeach
             @endif
           </tbody>

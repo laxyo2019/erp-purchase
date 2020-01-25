@@ -27,19 +27,12 @@
             </tr>
           </thead>
           <tbody>
-          	<?php //print_r($data); die; ?>
           		@if (!empty($data))
-	              @foreach ($data as $row)
+	              @foreach($data as $row)
 	              <tr>
 	                <td>{{ ++$i }}</td>
 	                <td>{{ $row->quotion_id }}</td>
-	                <td>
-	                	<select class="form-control">
-	                		@foreach($vendor as $vndr)
-												<option>{{ $vndr[0]->firm_name }}</option>
-	                		@endforeach
-	                	</select>
-	                </td>
+	                <td>{{ $row->firm_name }}</td>
 	                <td>{{ count(json_decode($row->item_list)) }}</td>
 	                <td>
 	                	@if($row->manager_status == 1) 
@@ -49,8 +42,6 @@
 	                <td>
 										@if($row->level1_status == 1) 
 	                		<span style=" color:green ; font-weight: bold">Approved</span>
-	                	@elseif($row->level1_status == 2)
-	                		<span style=" color:#ff9a00; font-weight: bold">Discard</span>
 	                	@endif
 	                </td>
 	                <td>
@@ -61,15 +52,13 @@
 	                	@endif
 	                </td>
 	                <td>
-	                  <a class="btn btn-success" href="{{ route('rfq.show',$row->id) }}" title="Sent Quotation"> <i class="fa fa-mail-forward"></i></a>
-	                  <a class="btn btn-success" href="{{ route('receivedQuotation',$row->id) }}" title="Received Quotation"><i class="fa fa-mail-reply"></i> </a>
+	                  <a class="btn btn-success" href="{{ route('approvalQuotation_item',$row->id) }}"><i class="fa fa-mail-forward"></i> Send PO</a>
 	                </td>
 	              </tr>
 	              @endforeach
 	            @endif
           </tbody>
         </table>
-        {!! $rfq->links() !!}
       </div>
     </div>
   </div>

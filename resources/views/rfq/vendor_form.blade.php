@@ -1,11 +1,21 @@
-<?php 
+<?php
 		$vendor_id = request()->segment(3);
 		$data = \App\vendor::find($vendor_id);
 		$itemsList = request()->segment(2);
 		$list = \App\VendorsMailSend::find($itemsList);
 		$items = json_decode($list->item_list);
 
-		//dd($items);
+		$QId = '#RFQ'.str_pad($itemsList, 4, '0', STR_PAD_LEFT);
+		$status = \App\QuotationReceived::where('quotion_id',$QId)->where('quotion_sends_id',$itemsList)->where('vender_id',$vendor_id)->get();
+		//dd($status); 
+		if(count($status)>0){			
+				echo "<script src='/themes/sb-admin2/vendor/jquery/jquery.min.js'></script>
+				<script> 
+						$(window).on('load',function(){
+				        $('#myModal').modal({backdrop: 'static', keyboard: false});
+				    });
+		    </script>";
+		}
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +42,20 @@
 </head>
 
 <body id="page-top">
+
+<div id="myModal" class="modal hide fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body text-center" style="color:#000">
+        <h3>Thank You</h3>
+        <p>for your quotation,<br> we will get back to you soon</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   <div id="wrapper">
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
@@ -49,7 +73,7 @@
 						            </ul>
 						        </div>
 						    @endif
-								<form action="{{ route('rfq.store') }}" method="post" enctype="multipart/form-data">
+								<form action="{{ route('vendorformstore',[$itemsList, $vendor_id]) }}" method="post" enctype="multipart/form-data">
 						    @csrf
 							  <table class="table table-bordered" id="myTable">
 							    <tr>
@@ -126,6 +150,8 @@
 							      <tr>
 							        <td colspan="2" align="center">
 							          <input type="hidden" name="quotion_id" id="quotion_id" value="{{ $list->quotion_id }}" />
+							          <input type="hidden" name="quotion_sends_id" id="quotion_sends_id" value="{{ $list->id }}" />
+							          <input type="hidden" name="vender_id" id="vender_id" value="{{ $vendor_id }}" />
 							          <button type="submit" name="submit" id="create_invoice" class="btn btn-info">Submit Quotation</button>
 							        </td>
 							      </tr>
