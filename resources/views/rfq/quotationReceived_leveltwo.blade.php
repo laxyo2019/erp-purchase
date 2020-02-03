@@ -45,10 +45,12 @@
 	                	@endif
 	                </td>
 	                <td>
-	                	@if($row->level2_status == 1) 
+	                	@if($row->level2_status == 0) 
+	                		<span style=" color:#ff9a00 ; font-weight: bold">Pending</span>
+	                	@elseif($row->level2_status == 1) 
 	                		<span style=" color:green ; font-weight: bold">Approved</span>
 	                	@elseif($row->level2_status == 2)
-	                		<span style=" color:#ff9a00; font-weight: bold">Discard</span>
+	                		<span style=" color:red; font-weight: bold">Discard</span>
 	                	@endif
 	                </td>
 	                <td>

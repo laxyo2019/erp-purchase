@@ -84,7 +84,7 @@
 							        	<table width="100%" cellpadding="5">
 										      <tr>
 										        <td width="65%">
-										         To,<br />
+										         From,<br />
 										         <b>{{ $data->firm_name }}</b><br />
 										         Name : {{ $data->name }}<br /> 
 										         Email Address : {{ $data->email }}<br />
@@ -148,6 +148,11 @@
 							        <td colspan="2"></td>
 							      </tr>
 							      <tr>
+							        <td colspan="2">
+							        	<textarea id="editor" name="terms" class="form-control input-sm"></textarea>
+							        </td>
+							      </tr>
+							      <tr>
 							        <td colspan="2" align="center">
 							          <input type="hidden" name="quotion_id" id="quotion_id" value="{{ $list->quotion_id }}" />
 							          <input type="hidden" name="quotion_sends_id" id="quotion_sends_id" value="{{ $list->id }}" />
@@ -195,9 +200,16 @@
   <!-- Page level custom scripts -->
   <script src="/themes/sb-admin2/js/demo/chart-area-demo.js"></script>
   <script src="/themes/sb-admin2/js/demo/chart-pie-demo.js"></script>
-
+	<script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
 
 {{-- <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script> --}}
+<script>
+    ClassicEditor
+    .create( document.querySelector( '#editor' ) )
+    .catch( error => {
+        console.error( error );
+    } );
+</script>
 <script>
 $(document).ready(function(){
   var final_total_amt = $('#final_total_amt').text();

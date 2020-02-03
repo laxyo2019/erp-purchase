@@ -40,7 +40,7 @@
 										    <table width="100%" cellpadding="5">
 										      <tr>
 										        <td width="65%">
-										         To,<br />
+										         From,<br />
 										         <b></b><br />
 										         Name : Laxyo Energy Ltd. <br /> 
 										         Email Address : info@laxyo.com<br />

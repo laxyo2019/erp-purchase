@@ -12,7 +12,7 @@
 		            </div>
 		        @endif
 						<?php //dd($data); die; ?>
-            <form action="" method="post">
+            <form action="{{ route('approvalQuotation_item_send', $data[0]->vender_id) }}" method="post">
                 @csrf
                 <div class="row">
                 	<div class="form-group col-md-12">
@@ -30,7 +30,7 @@
 										    <table width="100%" cellpadding="5" style="color:#000">
 										      <tr>
 										        <td width="65%">
-										         To,<br />
+										         From,<br />
 										         <b></b><br />
 										         Name : Laxyo Energy Ltd. <br /> 
 										         Email Address : info@laxyo.com<br />
@@ -106,17 +106,37 @@
 													  </tr>
 													</tbody>
 												</table>
-									   	</td>
+											</td>
 									  </tr>
-								</table>';
+								</table>
+								';
 
 								echo $table;
 								?>
+								<table border="1" width="100%" style="color:#000!important">
+									<tbody>
+										<tr>
+											<td>
+												<strong>Terms and Conditions: </strong>
+												<textarea id="editor" name="terms" class="form-control input-sm"></textarea>
+											</td>
+										</tr>
+									</tbody>
+								</table>
 								<textarea name="table" class="form-control" style="display: none"><?php echo $table; ?></textarea>
 						</form>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+    .create( document.querySelector( '#editor' ) )
+    .catch( error => {
+        console.error( error );
+    });
+</script>
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">

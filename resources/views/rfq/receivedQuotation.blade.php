@@ -46,11 +46,12 @@
 				    <?php 
 				  		foreach ($vendor as $key) {	
 				  			$row = $key[0];
+				  			$vids = $row->id;
 				  	?>
-				  		<div class="row box pt-3 @if($row->id == $AppVendor_id) bg-primary @endif">
+				  		<div class="row box pt-3" style="@if($AppLevel2==1 && $vids==$AppVendor_id) background: #0d8c46 @endif">
 						  	<div class="col-md-12">
 						  			<div class="col-md-3 float-left leftdiv">
-						  				<div class="text-center" style="@if($row->id == $AppVendor_id) color: #fff @else color: black @endif">
+						  				<div class="text-center" style="@if($AppLevel2==1 && $vids==$AppVendor_id) color: #fff @else color: black @endif">
 						  						<h3>{{ $row->firm_name }}</h3>
 						  						<p>{{ $row->name }}</p>
 						  						<span class="span1" style="float: left">{{ $data[0]->quotion_id }}</span>
@@ -58,7 +59,7 @@
 						  				</div>
 						  			</div>
 						  			<div class="col-md-7 float-left div-center">
-						  				<table class="@if($row->id == $AppVendor_id) table table-borderless @else table @endif" style="@if($row->id == $AppVendor_id) color: #fff; @else color: black @endif">
+						  				<table class="@if($AppLevel2==1 && $vids==$AppVendor_id) table table-borderless @else table @endif" style="@if($AppLevel2==1 && $vids==$AppVendor_id) color: #fff; @else color: black @endif">
 											  <thead>
 											    <tr>
 											      <th scope="col">#</th>
@@ -92,23 +93,37 @@
 											</table>
 						  			</div>
 						  			<div class="col-md-2 div-right ttlamt">
-						  				<div class="text-center mt-5" style="@if($row->id == $AppVendor_id) color: #fff @else color: black @endif">
+						  				<div class="text-center mt-5" style="@if($AppLevel2==1 && $vids==$AppVendor_id) color: #fff @else color: black @endif">
 						  						<h3>Total</h3>
 						  						<span>Rs. {{$total}}</span>
 						  				</div>
 						  			</div>
 						  	</div>
+						  	<div class="col-md-12">
+						  			<div class="div-border">
+						  				<div class="container-fluid mt-2 mb-2" style="@if($AppLevel2==1 && $vids==$AppVendor_id) color: #fff; @else color: black @endif">
+						  					<h5>Terms and Conditions: </h5>
+												<?php echo (!empty($data[0]->terms))?$data[0]->terms:'No terms and conditions available'; ?>
+											</div>
+						  			</div>
+						  	</div>
 						  	<div class="col-md-12 mb-3">
 						  			<div class="div-border">
-						  				<form id="addForm{{ $row->id }}" @if($AppQuote_id == $qid) style="pointer-events:none;" @endif >
+						  				<form id="addForm{{ $row->id }}" @if($AppQuote_id == $qid && $AppManager_status == 1) style="pointer-events:none;" @endif >
 						  					@csrf
-						  					<table class="table table-bordered" style="@if($row->id == $AppVendor_id) color: #fff; @else color: black; margin-bottom: 0; border:1px solid #000 @endif">
+						  					<table class="table table-bordered" style="@if($AppLevel2==1 && $vids==$AppVendor_id) color: #fff; @else color: black; margin-bottom: 0; border:1px solid #000 @endif">
 						  							<tr>
 							  							<td>
 							  								Manager : 
-							  								<span style="margin-left: 20px;">
-							  									<input type="radio" @if($AppManager_status==1 && $AppVendor_id == $row->id) checked disabled @endif @if($AppVendor_id != $row->id && $AppQuote_id == $qid) disabled @endif name="manager_status" value="1"> Approve
-							  								</span> 
+							  								@if($AppManager_status == 1 && $AppVendor_id == $row->id)
+							  									@if($AppManager_status == 1)
+							  										<span style=" color:#38fd38; font-weight: bold">Approved</span>
+							  									@elseif($AppManager_status == 0)
+									  								<span style="margin-left: 20px;">
+									  									<input type="radio" name="manager_status" value="1"> Approve
+									  								</span> 
+									  							@endif
+								  							@endif
 							  								<input type="hidden" name="quotion_id" value="{{ $data[0]->quotion_id }}">
 							  								<input type="hidden" name="quote_id" value="{{ request()->segment(2) }}">
 							  								<input type="hidden" name="vender_id" value="{{ $row->id }}">

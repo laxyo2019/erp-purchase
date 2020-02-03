@@ -12,10 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+Auth::routes(['register' => false]);
 
-Auth::routes();
+//Auth::routes();
 // all
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -96,6 +97,7 @@ Route::group(['middleware' => ['role:assistant_manager|purchase_manager']], func
     Route::post('QuotationApproval', 'QuotationReceivedController@QuotationApproval')->name('QuotationApproval');
     Route::get('approval_quotation', 'QuotationReceivedController@ApprovalQuotation')->name('approval_quotation');
     Route::get('approvalQuotation_item/{id}', 'QuotationReceivedController@ApprovalQuotationItems')->name('approvalQuotation_item');
+    Route::post('approvalQuotation_item_send/{id}', 'QuotationReceivedController@ApprovalQuotationItemSend')->name('approvalQuotation_item_send');
 });
 
 Route::group(['middleware' => ['role:users']], function () {

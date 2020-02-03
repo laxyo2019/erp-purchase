@@ -19,6 +19,7 @@ class CreateQuotationReceivedsTable extends Migration
             $table->string('quotion_id');
             $table->string('quotion_sends_id');
             $table->string('vender_id');
+            $table->text('terms')->nullable();
             $table->integer('status')->default('0');
             $table->timestamps();
         });

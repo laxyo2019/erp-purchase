@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
+use PDF;
 use App\Member;
 use App\VendorsMailSend;
 use App\QuotationReceived;
 use App\User;
 use App\vendor;
 use App\QuotationApprovals;
+use App\PO_SendToVendors;
 use App\Notifications\RFQ_Notification;
+use App\Mail\PO_SandsToVendor;
 
 class QuotationReceivedController extends Controller
 {
@@ -27,16 +30,13 @@ class QuotationReceivedController extends Controller
      */
     public function index()
     {	
-    		$data = DB::table('quotation_approvals')
-            ->join('vendors', 'quotation_approvals.vendor_id', '=', 'vendors.id')
-            ->join('vendors_mail_sends', 'quotation_approvals.quote_id', '=', 'vendors_mail_sends.id')
-            ->select('quotation_approvals.*', 'vendors.*', 'vendors_mail_sends.*')
-            ->get();
     		$rfq = VendorsMailSend::latest()->paginate(10);
+    		$data = QuotationApprovals::with('vendors_mail_items')->orderBy('id','desc')->get();
     		$vid = json_decode($rfq[0]->email);
+    		$vendor = array();
     		foreach ($vid as $key) {
     				$vendor[] = vendor::where('id',$key)->get();
-        }
+    		}
         return view('rfq.index',compact('rfq','vendor','data'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -91,10 +91,17 @@ class QuotationReceivedController extends Controller
 					 			'items' => json_encode($quotationItemsTable), 
 					 			'quotion_id' => $request->quotion_id,
 					 			'quotion_sends_id' => $request->quotion_sends_id,
-					 			'vender_id' => $request->vender_id
+					 			'vender_id' => $request->vender_id,
+					 			'terms' => $request->terms
+					 		);
+					 		$data1 = array(
+					 			'quotation_id' => $request->quotion_id,
+					 			'quote_id' => $request->quotion_sends_id,
+					 			'vendor_id' => $request->vender_id
 					 		);
 					 		//dd($data);
 			        QuotationReceived::create($data);
+			        QuotationApprovals::create($data1);
 						}			  
 		  	 		$x++;
 		  	 	}
@@ -208,5 +215,30 @@ class QuotationReceivedController extends Controller
     		// 	$vendor[] = vendor::where('id',$val)->get();
     		// }
     		return view('rfq.approvalQuotation_item',compact('data','vendor','manager_approved','vid'));
+    }
+
+    public function ApprovalQuotationItemSend(request $request,$id){
+    		$tbl = $request->table;
+    		$tbl1 = $request->terms;
+    		$pdf = PDF::loadView('rfq.PO_mail_data', compact('tbl','tbl1'));
+    		$pdf = $pdf->Output('', 'S');
+
+    		$autoId = DB::select(DB::raw("SELECT nextval('po_send_to_vendors_id_seq')"));
+				$nextval = $autoId[0]->nextval+1;
+				//$nextval = Helper::getRFQSendMailAutoIncrementId();
+  			$data = array(
+  					'vendor_id'		=>	$id,
+  					'po_id'	=>	'#PO'.str_pad($nextval, 4, '0', STR_PAD_LEFT),
+  			);
+  			$datas = PO_SendToVendors::create($data);
+  			$vendor = vendor::find($id);
+  			$details = array(
+  				'table' => $request->table,
+  				'pdf' => $pdf,
+  				'vendor_data' => $vendor,
+  			);
+  			\Mail::to($vendor->email)->send(new PO_SandsToVendor($details));
+
+  			return redirect()->route('approval_quotation')->with('success','Purchase Order and Mail sends successfully');
     }
 }
