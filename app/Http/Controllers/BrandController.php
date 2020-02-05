@@ -23,7 +23,7 @@ class BrandController extends Controller
     {
         $brand = brand::with(['category'])->latest()->paginate(10);
         $item_category = item_category::all();
-        return view('brand',compact('brand','item_category'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('subcategory',compact('brand','item_category'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -107,6 +107,6 @@ class BrandController extends Controller
     public function destroy($id)
     {
         brand::find($id)->delete();
-        return redirect()->route('brand.index')->with('success','Subcategory deleted successfully');
+        return redirect()->route('subcategory.index')->with('success','Subcategory deleted successfully');
     }
 }

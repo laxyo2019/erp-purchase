@@ -118,10 +118,10 @@
       <div class="bg-white py-2 collapse-inner rounded">
         <a class="collapse-item" href="{{ '/um' }}">Units of Measurement</a>
         <a class="collapse-item" href="{{ '/category' }}">Items Category</a>
+        <a class="collapse-item" href="{{ '/subcategory' }}">Items Subcategory</a>
         <!-- <a class="collapse-item" href="{{ '/location' }}">Location</a> -->
         <a class="collapse-item" href="{{ '/gst_state_code' }}">GST States</a>
         <a class="collapse-item" href="{{ '/department' }}">Department</a>
-        <a class="collapse-item" href="{{ '/brand' }}">Brand</a>
       </div>
     </div>
   </li>

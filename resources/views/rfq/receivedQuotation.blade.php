@@ -11,12 +11,14 @@
 		$AppQuote_id = $QuotationApproval[0]->quote_id;
 		$AppLevel1 = $QuotationApproval[0]->level1_status;
 		$AppLevel2 = $QuotationApproval[0]->level2_status;
+		$AppId = $QuotationApproval[0]->id;
 	}else{
 		$AppVendor_id = '';
 		$AppManager_status = '';
 		$AppQuote_id = '';
 		$AppLevel1 = '';
 		$AppLevel2 = '';
+		$AppId = '';
 	}
 ?>
 <div class="container-fluid">
@@ -118,15 +120,15 @@
 							  								@if($AppManager_status == 1 && $AppVendor_id == $row->id)
 							  									@if($AppManager_status == 1)
 							  										<span style=" color:#38fd38; font-weight: bold">Approved</span>
-							  									@elseif($AppManager_status == 0)
+							  									@endif
+							  								@elseif($AppManager_status == 0)
 									  								<span style="margin-left: 20px;">
 									  									<input type="radio" name="manager_status" value="1"> Approve
 									  								</span> 
-									  							@endif
 								  							@endif
-							  								<input type="hidden" name="quotion_id" value="{{ $data[0]->quotion_id }}">
-							  								<input type="hidden" name="quote_id" value="{{ request()->segment(2) }}">
-							  								<input type="hidden" name="vender_id" value="{{ $row->id }}">
+							  								<input type="hidden" name="quotion_id" value="{{ $AppId }}">
+							  								<!-- <input type="hidden" name="quote_id" value="{{ request()->segment(2) }}">
+							  								<input type="hidden" name="vender_id" value="{{ $row->id }}"> -->
 							  							</td>
 							  							<td>
 							  								Level 1 : 

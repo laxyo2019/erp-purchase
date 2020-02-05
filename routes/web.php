@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return Auth::check() ? view('/home') :  view('auth.login');
 });
 Auth::routes(['register' => false]);
 
@@ -56,7 +56,7 @@ Route::group(['middleware' => ['role:lavel_2']], function () {
 		Route::POST('filter', 'ItemController@filter')->name('filter');
 		Route::get('export_pdf', 'ItemController@export_pdf')->name('export_pdf');
 		Route::resource('/department', 'DepartmentController');
-		Route::resource('/brand', 'BrandController');
+		Route::resource('/subcategory', 'BrandController');
 		Route::post('/purchase/fetch', 'PurchaseController@fetch')->name('fetch');
 		Route::post('/purchase/updateQty', 'PurchaseController@updateQty')->name('updateQty');
 		Route::get('/holdStatus', 'PurchaseController@holdStatus')->name('holdStatus');

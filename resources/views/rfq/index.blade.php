@@ -80,7 +80,9 @@
 		          <tbody>
 		          		<?php //dd($data[0]['vendors_mail_items']->email); ?>
 		          		@if (!empty($data))
-		          			<?php $n = 1; ?>
+		          			<?php 
+		          					$n = 1;
+		          			?>
 			              @foreach ($data as $rows)
 			              <tr>
 			                <td>{{ $n++ }}</td>

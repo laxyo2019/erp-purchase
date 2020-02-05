@@ -39,7 +39,7 @@
 
                   <a href="#" onclick="event.preventDefault(); if(confirm('Are you sure?') == true) { getElementById('delete-form-{{ $row->id }}').submit(); }" class="btn btn-danger">Delete</a>
 
-                  <form id="delete-form-{{ $row->id }}" action="{{ route('brand.destroy', $row->id) }}" method="POST" style="display: none;">
+                  <form id="delete-form-{{ $row->id }}" action="{{ route('subcategory.destroy', $row->id) }}" method="POST" style="display: none;">
                     @csrf
                     @method('DELETE')
                     
@@ -138,7 +138,7 @@ $(document).ready(function() {
       var id = '{{ $row->id }}';
       $.ajax({
           type: 'post',
-          url: "brand/"+id,
+          url: "subcategory/"+id,
           data: $('#updateForm{{ $row->id }}').serialize(),
           success: function(data) {
               alert('Subcategory Updated');
@@ -156,7 +156,7 @@ $(document).ready(function() {
    		e.preventDefault();
  		$.ajax({
 	        type: 'post',
-	        url: '/brand',
+	        url: '/subcategory',
 	        data: $('#addForm').serialize(),
 	        success: function(data) {
             	alert(data);

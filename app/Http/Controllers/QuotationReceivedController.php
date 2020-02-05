@@ -32,11 +32,13 @@ class QuotationReceivedController extends Controller
     {	
     		$rfq = VendorsMailSend::latest()->paginate(10);
     		$data = QuotationApprovals::with('vendors_mail_items')->orderBy('id','desc')->get();
-    		$vid = json_decode($rfq[0]->email);
-    		$vendor = array();
-    		foreach ($vid as $key) {
-    				$vendor[] = vendor::where('id',$key)->get();
-    		}
+    		if($rfq != ''){
+	    		$vid = json_decode($rfq[0]->email);
+	    		$vendor = array();
+	    		foreach ($vid as $key) {
+	    				$vendor[] = vendor::where('id',$key)->get();
+	    		}
+	    	}
         return view('rfq.index',compact('rfq','vendor','data'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -94,29 +96,25 @@ class QuotationReceivedController extends Controller
 					 			'vender_id' => $request->vender_id,
 					 			'terms' => $request->terms
 					 		);
-					 		$data1 = array(
-					 			'quotation_id' => $request->quotion_id,
-					 			'quote_id' => $request->quotion_sends_id,
-					 			'vendor_id' => $request->vender_id
-					 		);
 					 		//dd($data);
 			        QuotationReceived::create($data);
-			        QuotationApprovals::create($data1);
 						}			  
 		  	 		$x++;
 		  	 	}
+		  	 	$data1 = array(
+			 			'quotation_id' => $request->quotion_id,
+			 			'quote_id' => $request->quotion_sends_id,
+			 			'vendor_id' => $request->vender_id
+			 		);
+			    QuotationApprovals::create($data1);
 		  	}
     		return back()->with('success','Thank You for quotation, we will get back to you soon');
     }
 
     public function QuotationApproval(Request $request){
-    		$data = array(
-    				'manager_status' => $request->manager_status,
-    				'quotation_id' => $request->quotion_id,
-    				'quote_id' => $request->quote_id,
-    				'vendor_id' => $request->vender_id,
-    		);
-    		QuotationApprovals::create($data);
+    		$manager_status = $request->manager_status;
+    		$id = $request->quotion_id;
+    		QuotationApprovals::where('id', $id)->update(['manager_status'=> $manager_status]);
     }
 
     public function QuotationReceivedAtLevelOne(){

@@ -254,8 +254,7 @@ class RequestForItemController extends Controller
     				'vendor_id' => $vendor->id,
     			);
     			\Mail::to($vendor->email)->send(new SendMailToVendors($details));
-
-    			return redirect()->route('user_request')->with('success','Mail sends successfully');
     		}
+    		return redirect()->route('user_request')->with('success','Mail sends successfully');
     }
 }
