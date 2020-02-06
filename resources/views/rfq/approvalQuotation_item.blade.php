@@ -16,6 +16,7 @@
                 @csrf
                 <div class="row">
                 	<div class="form-group col-md-12">
+                		<input type="hidden" name="approval_quotation_id" value="{{ request()->segment(2) }}">
                 		<button type="submit" name="submit" class="btn btn-primary error-w3l-btn px-4 float-right">Submit</button>
                 	</div>
                 </div>

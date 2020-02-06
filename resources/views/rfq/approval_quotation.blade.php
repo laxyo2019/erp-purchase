@@ -52,7 +52,24 @@
 	                	@endif
 	                </td>
 	                <td>
-	                  <a class="btn btn-success" href="{{ route('approvalQuotation_item',$row->id) }}"><i class="fa fa-mail-forward"></i> Send PO</a>
+	                	@if(!empty($po_status))
+	                		@foreach($po_status as $po)
+	                			@foreach($po as $po1)
+	                			<?php 
+	                				$val = $po1->approval_quotation_id;
+	                				if($val == $row->id){
+	                			?>
+												<p class="btn btn-dark disabled">PO Sent</p>
+	                			<?php
+	                				}else{
+	                			?>
+	                  		<a class="btn btn-success" href="{{ route('approvalQuotation_item',$row->id) }}"><i class="fa fa-mail-forward"></i> Send PO</a>
+	                  		<?php } ?>
+	                  		@endforeach
+	                  	@endforeach
+	                  @else
+											
+	                  @endif
 	                </td>
 	              </tr>
 	              @endforeach

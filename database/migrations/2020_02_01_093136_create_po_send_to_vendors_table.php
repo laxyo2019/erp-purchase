@@ -16,6 +16,7 @@ class CreatePOSendToVendorsTable extends Migration
         Schema::create('po_send_to_vendors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('vendor_id');
+            $table->integer('approval_quotation_id')->default('0');
             $table->string('po_id');
             $table->timestamps();
         });

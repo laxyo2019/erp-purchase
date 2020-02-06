@@ -20,7 +20,7 @@ class QuotationReceivedController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'VendorRFQFormData']);
+        $this->middleware('auth', ['except' => array('VendorRFQFormData', 'VendorRFQFormDataStore')]);
     }
 
     /**
@@ -30,7 +30,8 @@ class QuotationReceivedController extends Controller
      */
     public function index()
     {	
-    		$rfq = VendorsMailSend::latest()->paginate(10);
+    		//$rfq = VendorsMailSend::latest()->paginate(10);
+    		$rfq = DB::table('vendors_mail_sends')->distinct(['quotion_sent_id'])->paginate(10);
     		$data = QuotationApprovals::with('vendors_mail_items')->orderBy('id','desc')->get();
     		if($rfq != ''){
 	    		$vid = json_decode($rfq[0]->email);
@@ -189,7 +190,11 @@ class QuotationReceivedController extends Controller
             ->select('quotation_approvals.*', 'vendors.*', 'vendors_mail_sends.*')
             ->where('quotation_approvals.manager_status', '=', 1)->where('quotation_approvals.level1_status', '=', 1)->where('quotation_approvals.level2_status', '=', 1)->paginate(10);
 
-        return view('rfq.approval_quotation',compact('data'))->with('i', (request()->input('page', 1) - 1) * 10);
+         	foreach($data as $datas){
+         		$quote_id = $datas->quote_id;
+         		$po_status[] = PO_SendToVendors::where('approval_quotation_id',$quote_id)->get();
+         	}
+        return view('rfq.approval_quotation',compact('data','po_status'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function ApprovalQuotationItems($id){
@@ -226,6 +231,7 @@ class QuotationReceivedController extends Controller
 				//$nextval = Helper::getRFQSendMailAutoIncrementId();
   			$data = array(
   					'vendor_id'		=>	$id,
+  					'approval_quotation_id' => $request->approval_quotation_id, 
   					'po_id'	=>	'#PO'.str_pad($nextval, 4, '0', STR_PAD_LEFT),
   			);
   			$datas = PO_SendToVendors::create($data);
