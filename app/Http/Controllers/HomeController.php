@@ -25,13 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-    		/*$data = User::find(Auth::id());
+    		$data = User::find(Auth::user()->id);
     		if($data->hasRole('level_2')){
     			return "teur";
     		}
     		else{
     			return "skdfgjsdhbf";
-    		}*/
+    		}
         return view('home');
     }
 }
